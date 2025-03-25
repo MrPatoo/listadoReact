@@ -5,44 +5,81 @@ const Lista = ()=>{
     const [nombre, setNombre] = useState('');
     const [edad, setEdad] = useState('');
     const [carnet, setCarnet] = useState('');
-    //const [task, setTask] = useState("");
+    const [estudiantes, setEstudiantes] = useState([]);
 
-    const addEstudiante =()=>{
-        if (task.trim() === "") return;
-        setNombre([...nombre, { id: Date.now(), text: task, completed: false }]);
-        setEdad([...edad, { id: Date.now(), text: task, completed: false }]);
-        setCarnet([...carnet, { id: Date.now(), text: task, completed: false }]);
-      //  setTask("");
-    }
+    const addEstudiante = () => {
+        if (nombre.trim() === '' || edad.trim() === '' || carnet.trim() === '') return;     
+        setNombre('');
+        setEdad('');
+        setCarnet('');
+        setEstudiantes([...estudiantes, { id: Date.now(), nombre, edad, carnet }]);
+    };
 
+    const deleteEstudiante = (id) => {
+        setEstudiantes(estudiantes.filter(estudiante => estudiante.id !== id));
+    };
 
 
     return(
         <>
-        <h1>Listado de alumnos</h1>
+            <div style={{
+                backgroundColor: '#CDCDCD',
+                padding: '40px',
+                minHeight: '400px',
+                width: '80%',
+                margin: 'auto',
+                borderRadius: '20px'
+            }}>
+                <h1>Registro de Estudiantes</h1>
+                <br />
+                <div className="form-floating mb-3">
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Nombre"
+                        value={nombre}
+                        onChange={(e) => setNombre(e.target.value)}
+                    />
+                    
+                </div>
+                <div className="form-floating mb-3">
+                    <input
+                        type="number"
+                        className="form-control"
+                        placeholder="Edad"
+                        value={edad}
+                        onChange={(e) => setEdad(e.target.value)}
+                    />
+                    
+                </div>
+                <div className="form-floating">
+                    <input
+                        type="number"
+                        className="form-control"
+                        placeholder="Carnet"
+                        value={carnet}
+                        onChange={(e) => setCarnet(e.target.value)}
+                    />
+                    
+                </div>
+                <br />
+                <button type="button" className="btn btn-primary" onClick={addEstudiante}>Agregar</button>
 
-        <input 
-        type="text"
-        placeholder="Nombre del alumno" 
-        value={nombre}
-        onChange={(e) => setNombre(e.target.value)}
-        />
-
-        <input 
-        type="text" 
-        placeholder="Edad del alumno"
-        value={edad}
-        onChange={(e) => setEdad(e.target.value)}
-        />
-
-        <input 
-        type="text"
-        placeholder="Carnet del alumno"
-        value={carnet}
-        onChange={(e) => setCarnet(e.target.value)}
-        />
-
-        <button onClick={addEstudiante}>Agregar</button>
+                <br /><br />
+                <h1>Listado:</h1>
+                <ul>
+                    {estudiantes.map((estudiante) => (
+                        <li key={estudiante.id}>
+                            {estudiante.nombre} - {estudiante.edad} años - Carnet: {estudiante.carnet}
+                            <button 
+                                onClick={() => deleteEstudiante(estudiante.id)}
+                                style={{ marginLeft: '10px', backgroundColor: 'red', color: 'white', border: 'none', padding: '5px', cursor: 'pointer' }}>
+                                X
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            </div>
         
         </>
     );
